@@ -1,20 +1,19 @@
 //variables
-var photoName = [];
-var photoPath = [];
-var photoVotes = [];
-var randomGenerate = 0;
+var allPhotos = [];
+var randomGenerate;
+var displayphoto1 = document.getElementById('photoholder1');
+var displayphoto2 = document.getElementById('photoholder2');
+var photo1;
+var photo2;
 
 //photo Object constructor
 
 function Photo(theName, path) {
-  this.theName = name;
+  this.theName = theName;
   this.path = path;
   this.votes = 0;
-  photoName.push(this.name);
-  photoPath.push(this.path);
-  photoVotes.push(this.votes);
+  allPhotos.push(this);
 }
-//create places
 
 var london = new Photo('London', 'images/london.jpg');
 var boraBora = new Photo('Bora Bora', 'images/borabora.jpg');
@@ -32,18 +31,20 @@ var yellowStone = new Photo('Yellowstone', 'images/yellowstone.jpg');
 var zurich = new Photo('Zurich', 'images/zurich.jpg');
 var budapest = new Photo('Budapest', 'images/budapest.jpg');
 //Tracker Object constructor
+// function VoteTracker() {
 
-//functions
+// }
+//functions to change into methods of the tracker functions
 
-var randomPhoto = function () {
-  randomGenerate = Math.floor(Math.random() * photoName.length);
+randomPhoto = function () {
+  randomGenerate = Math.floor(Math.random() * allPhotos.length);
   console.log (randomGenerate);
   return randomGenerate;
 }
 
-var display = function () { //if working need to convert to displaying images
-  var photo1 = randomPhoto();
-  var photo2 = randomPhoto();
+display = function () {
+  photo1 = randomPhoto();
+  photo2 = randomPhoto();
 
   while (photo1 === photo2) {
     photo1 = randomPhoto();
@@ -51,20 +52,52 @@ var display = function () { //if working need to convert to displaying images
   }
 
   var newImage1 = new Image(300, 300);
-  newImage1.src = photoPath[photo1];
-  var displayphoto1 = document.getElementById('photoholder1');
+  newImage1.src = allPhotos[photo1].path;
+  newImage1.id = 'left';
   displayphoto1.appendChild(newImage1);
 
   var newImage2 = new Image(300, 300);
-  newImage2.src = photoPath[photo2];
-  var displayphoto2 = document.getElementById('photoholder2');
+  newImage2.src = allPhotos[photo2].path;
+  newImage2.id = 'right';
   displayphoto2.appendChild(newImage2);
 }
 
+refreshPhotos = function () {
+  photo1 = randomPhoto();
+  photo2 = randomPhoto();
 
-//code
+  while (photo1 === photo2) {
+    photo1 = randomPhoto();
+    photo2 = randomPhoto();
+  }
+  var getLeft = document.getElementById('left');
+  var getRight = document.getElementById('right');
+  getLeft.src = allPhotos[photo1].path;
+  getRight.src = allPhotos[photo2].path;
+}
+
+displayphoto1.addEventListener('click', function () {
+  allPhotos[photo1].votes++;
+  refreshPhotos();
+  console.log(allPhotos[photo1]);
+});
+displayphoto2.addEventListener('click', function () {
+  allPhotos[photo2].votes++;
+  refreshPhotos();
+  console.log(allPhotos[photo2]);
+});
+
+//takes selected photo and highlights it
 
 display();
+
+// VoteTracker.protoype.pieChart = function(){
+
+// };
+
+// //code
+// // put everything after intitial load into an event listener connected to a "Play Again" button
+// VoteTracker.display();// move this to inside a while loop that calls all methods.
 
 
 
