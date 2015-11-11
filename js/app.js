@@ -60,7 +60,10 @@ display = function () {
   newImage2.src = allPhotos[photo2].path;
   newImage2.id = 'right';
   displayphoto2.appendChild(newImage2);
+
+
 }
+
 
 refreshPhotos = function () {
   photo1 = randomPhoto();
@@ -74,7 +77,38 @@ refreshPhotos = function () {
   var getRight = document.getElementById('right');
   getLeft.src = allPhotos[photo1].path;
   getRight.src = allPhotos[photo2].path;
+
+
+
 }
+
+var pieVotes = [];
+  var pieLabels = [];
+
+  for (var i = 0; i < allPhotos.length; i++) {
+    pieVotes.push(allPhotos[i].votes);
+    pieLabels.push(allPhotos[i].theName);
+  }
+  console.log(pieVotes, pieLabels);
+
+function randomColor() {
+  var hexDigits = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"];
+  var result= "#";
+  for (var i = 0; i < 6; i++) {
+    result += hexDigits[Math.floor(Math.random() * hexDigits.length)];
+  }
+  return result;
+}
+
+var pieData = [];
+  for (var i in pieLabels) {
+    pieData.push({
+      value: pieVotes[i],
+      label: pieLabels[i],
+      color: randomColor(),
+      highlight: "#eeeeee"
+    })
+  }
 
 displayphoto1.addEventListener('click', function () {
   allPhotos[photo1].votes++;
@@ -90,6 +124,13 @@ displayphoto2.addEventListener('click', function () {
 //takes selected photo and highlights it
 
 display();
+
+
+
+
+
+  var myChart = document.getElementById("canvas").getContext("2d");
+  new Chart(myChart).Pie(pieData);
 
 // VoteTracker.protoype.pieChart = function(){
 
